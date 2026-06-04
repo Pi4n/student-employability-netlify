@@ -1,0 +1,29 @@
+# Netlify deployment configuration
+# Frontend: static HTML/CSS/JS
+# Backend:  Netlify Serverless Functions (Node.js + @supabase/supabase-js)
+# DB:       Supabase (PostgreSQL)
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Cleaner API paths: /api/foo -> /.netlify/functions/foo
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Required environment variables (set in Netlify UI -> Site settings -> Env):
+#   SUPABASE_URL              = https://<project-ref>.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY = <service role key, server-only>
