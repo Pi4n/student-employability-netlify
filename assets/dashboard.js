@@ -2,7 +2,7 @@
 /**
  * Dashboard Logic
  * Displays live Marketability Index for selected student.
- * All data fetched from Oracle via /.netlify/functions/get-state.
+ * All data fetched from Supabase via /.netlify/functions/get-state.
  */
 
 (function () {
@@ -49,7 +49,7 @@
       state = await App.get(true);
     } catch (err) {
       showLoading(false);
-      App.notify("Failed to load data from Oracle", "danger");
+      App.notify("Failed to load data from Supabase", "danger");
       return;
     }
 

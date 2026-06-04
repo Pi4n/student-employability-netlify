@@ -9,7 +9,7 @@
  */
 
 const { getSupabase } = require('./_shared/supabaseClient');
-const { transformLODomainToOracle } = require('./_shared/transformers');
+const { transformLODomainToDb } = require('./_shared/transformers');
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -84,7 +84,7 @@ exports.handler = async (event) => {
       return json(400, { error: 'lo_code and description are required' });
     }
 
-    const domain = transformLODomainToOracle(body.domain || 'Academic');
+    const domain = transformLODomainToDb(body.domain || 'Academic');
     const course_id = body.course_id
       ? parseInt(body.course_id, 10)
       : await ensureDefaultCourse(supabase);

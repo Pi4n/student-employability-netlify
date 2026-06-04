@@ -8,10 +8,10 @@
 
 const { getSupabase } = require('./_shared/supabaseClient');
 const {
-  transformCreditBearingToOracle,
-  transformKnowledgeTypeToOracle,
-  transformMappingStrengthToOracle,
-  transformAchievementToOracle
+  transformCreditBearingToDb,
+  transformKnowledgeTypeToDb,
+  transformMappingStrengthToDb,
+  transformAchievementToDb
 } = require('./_shared/transformers');
 
 const CORS = {
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
       const credit_hours  = Number.isFinite(parseInt(body.credit_hours, 10))
         ? parseInt(body.credit_hours, 10) : 0;
       // is_credit_bearing is a PostgreSQL BOOLEAN
-      const is_credit_bearing = transformCreditBearingToOracle(body.is_credit_bearing) === 1;
+      const is_credit_bearing = transformCreditBearingToDb(body.is_credit_bearing) === 1;
 
       if (!activity_name || !organizer || !category) {
         return json(400, { error: 'activity_name, organizer and category are required' });
@@ -94,8 +94,8 @@ exports.handler = async (event) => {
       if (!Number.isFinite(cocurr_id) || !Number.isFinite(skill_id)) {
         return json(400, { error: 'cocurr_id and skill_id are required' });
       }
-      const knowledge_type   = transformKnowledgeTypeToOracle(body.knowledge_type);
-      const mapping_strength = transformMappingStrengthToOracle(body.mapping_strength || 0.6);
+      const knowledge_type   = transformKnowledgeTypeToDb(body.knowledge_type);
+      const mapping_strength = transformMappingStrengthToDb(body.mapping_strength || 0.6);
 
       const { data, error } = await supabase
         .from('cocurr_skill_mapping')
@@ -130,7 +130,7 @@ exports.handler = async (event) => {
       const cocurr_id  = parseInt(body.cocurr_id, 10);
       const semester   = (body.semester || '').trim();
       const role       = (body.role || '').trim();
-      const achievement = transformAchievementToOracle(body.achievement ?? 0.7);
+      const achievement = transformAchievementToDb(body.achievement ?? 0.7);
 
       if (!Number.isFinite(student_id) || !Number.isFinite(cocurr_id) || !semester || !role) {
         return json(400, { error: 'student_id, cocurr_id, semester and role are required' });

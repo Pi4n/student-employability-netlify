@@ -4,7 +4,7 @@
  */
 
 const { getSupabase } = require('./_shared/supabaseClient');
-const { transformCourseTypeToOracle } = require('./_shared/transformers');
+const { transformCourseTypeToDb } = require('./_shared/transformers');
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -28,7 +28,7 @@ exports.handler = async (event) => {
     const program_id  = parseInt(body.program_id, 10);
     const credit_hours = Number.isFinite(parseInt(body.credit_hours, 10))
       ? parseInt(body.credit_hours, 10) : 3;
-    const course_type = transformCourseTypeToOracle(body.course_type || 'Core');
+    const course_type = transformCourseTypeToDb(body.course_type || 'Core');
     const courseIdRaw = body.course_id ? parseInt(body.course_id, 10) : null;
 
     if (!course_code || !course_name || !Number.isFinite(program_id)) {

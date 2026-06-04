@@ -4,7 +4,7 @@
  */
 
 const { getSupabase } = require('./_shared/supabaseClient');
-const { transformSkillTypeToOracle } = require('./_shared/transformers');
+const { transformSkillTypeToDb } = require('./_shared/transformers');
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -24,7 +24,7 @@ exports.handler = async (event) => {
     catch { return json(400, { error: 'Invalid JSON body' }); }
 
     const skill_name  = (body.skill_name || '').trim();
-    const skill_type  = transformSkillTypeToOracle(body.skill_type);
+    const skill_type  = transformSkillTypeToDb(body.skill_type);
     const description = body.description ? String(body.description) : null;
 
     if (!skill_name || !body.skill_type) {

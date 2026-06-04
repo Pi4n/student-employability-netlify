@@ -5,14 +5,14 @@
 
 const { getSupabase } = require('./_shared/supabaseClient');
 const {
-  transformCourseTypeFromOracle,
-  transformStatusFromOracle,
-  transformKnowledgeTypeFromOracle,
-  transformSkillTypeFromOracle,
-  transformMappingStrengthFromOracle,
-  transformAchievementFromOracle,
-  transformLODomainFromOracle,
-  transformCreditBearingFromOracle
+  transformCourseTypeFromDb,
+  transformStatusFromDb,
+  transformKnowledgeTypeFromDb,
+  transformSkillTypeFromDb,
+  transformMappingStrengthFromDb,
+  transformAchievementFromDb,
+  transformLODomainFromDb,
+  transformCreditBearingFromDb
 } = require('./_shared/transformers');
 
 const CORS = {
@@ -81,7 +81,7 @@ exports.handler = async (event) => {
         course_id: String(r.course_id),
         course_code: r.course_code,
         course_name: r.course_name,
-        course_type: transformCourseTypeFromOracle(r.course_type),
+        course_type: transformCourseTypeFromDb(r.course_type),
         credit_hours: r.credit_hours,
         program_id: String(r.program_id)
       })),
@@ -90,14 +90,14 @@ exports.handler = async (event) => {
         lo_id: String(r.lo_id),
         lo_code: r.lo_code,
         description: r.description,
-        domain: transformLODomainFromOracle(r.domain),
+        domain: transformLODomainFromDb(r.domain),
         course_id: String(r.course_id)
       })),
 
       employabilitySkills: (skills.data || []).map(r => ({
         skill_id: String(r.skill_id),
         skill_name: r.skill_name,
-        skill_type: transformSkillTypeFromOracle(r.skill_type),
+        skill_type: transformSkillTypeFromDb(r.skill_type),
         description: r.description || ''
       })),
 
@@ -105,8 +105,8 @@ exports.handler = async (event) => {
         mapping_id: String(r.mapping_id),
         lo_id: String(r.lo_id),
         skill_id: String(r.skill_id),
-        knowledge_type: transformKnowledgeTypeFromOracle(r.knowledge_type),
-        mapping_strength: transformMappingStrengthFromOracle(r.mapping_strength)
+        knowledge_type: transformKnowledgeTypeFromDb(r.knowledge_type),
+        mapping_strength: transformMappingStrengthFromDb(r.mapping_strength)
       })),
 
       coCurriculum: (coCurriculum.data || []).map(r => ({
@@ -114,7 +114,7 @@ exports.handler = async (event) => {
         activity_name: r.activity_name,
         organizer: r.organizer,
         category: r.category,
-        is_credit_bearing: transformCreditBearingFromOracle(r.is_credit_bearing),
+        is_credit_bearing: transformCreditBearingFromDb(r.is_credit_bearing),
         credit_hours: r.credit_hours
       })),
 
@@ -122,8 +122,8 @@ exports.handler = async (event) => {
         mapping_id: String(r.mapping_id),
         cocurr_id: String(r.cocurr_id),
         skill_id: String(r.skill_id),
-        knowledge_type: transformKnowledgeTypeFromOracle(r.knowledge_type),
-        mapping_strength: transformMappingStrengthFromOracle(r.mapping_strength)
+        knowledge_type: transformKnowledgeTypeFromDb(r.knowledge_type),
+        mapping_strength: transformMappingStrengthFromDb(r.mapping_strength)
       })),
 
       enrollments: (enrollments.data || []).map(r => ({
@@ -131,7 +131,7 @@ exports.handler = async (event) => {
         student_id: String(r.student_id),
         course_id: String(r.course_id),
         semester: r.semester,
-        status: transformStatusFromOracle(r.status),
+        status: transformStatusFromDb(r.status),
         grade: r.grade || ''
       })),
 
@@ -141,7 +141,7 @@ exports.handler = async (event) => {
         cocurr_id: String(r.cocurr_id),
         semester: r.semester,
         role: r.role || '',
-        achievement: transformAchievementFromOracle(r.achievement)
+        achievement: transformAchievementFromDb(r.achievement)
       }))
     };
 

@@ -4,7 +4,7 @@
  */
 
 const { getSupabase } = require('./_shared/supabaseClient');
-const { transformStatusToOracle } = require('./_shared/transformers');
+const { transformStatusToDb } = require('./_shared/transformers');
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
     const student_id = parseInt(body.student_id, 10);
     const course_id  = parseInt(body.course_id, 10);
     const semester   = (body.semester || '').trim();
-    const status     = transformStatusToOracle(body.status || 'In Progress');
+    const status     = transformStatusToDb(body.status || 'In Progress');
     const grade      = body.grade ? String(body.grade) : null;
 
     if (!Number.isFinite(student_id) || !Number.isFinite(course_id) || !semester) {

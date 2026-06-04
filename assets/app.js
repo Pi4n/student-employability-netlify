@@ -1,10 +1,10 @@
 /* global window, fetch */
 /**
  * CCS3402 Marketability App — Core Application Module
- * 
- * Migrated from localStorage to Live Oracle Database via Netlify Serverless Functions.
+ *
+ * Live Supabase (PostgreSQL) database via Netlify Serverless Functions.
  * All data operations are asynchronous and route through /.netlify/functions/* endpoints.
- * 
+ *
  * Exposed globally as window.App
  */
 
@@ -33,7 +33,7 @@
   let _fetchPromise = null;
 
   // ============================================================
-  // STATE MANAGEMENT - Live Oracle DB via Netlify Functions
+  // STATE MANAGEMENT - Live Supabase DB via Netlify Functions
   // ============================================================
 
   /**
@@ -57,7 +57,7 @@
   }
 
   /**
-   * Fetches the complete application state from the live Oracle database.
+   * Fetches the complete application state from the live Supabase database.
    * Routes through /.netlify/functions/get-state and handles transformation server-side.
    * Returns a deep copy to prevent accidental mutation.
    */

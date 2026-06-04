@@ -27,14 +27,14 @@
 
       if (total === 0) {
         statusEl.className = "text-secondary";
-        statusEl.textContent = "Connected to Oracle database. Tables are currently empty - use Admin Management to begin.";
+        statusEl.textContent = "Connected to Supabase database. Tables are currently empty - use Admin Management to begin.";
       } else {
         statusEl.className = "text-success";
-        statusEl.innerHTML = `Connected to Oracle database. Live records: <span class="mono">${totals.programs}</span> programs, <span class="mono">${totals.students}</span> students, <span class="mono">${totals.courses}</span> courses, <span class="mono">${totals.skills}</span> skills.`;
+        statusEl.innerHTML = `Connected to Supabase database. Live records: <span class="mono">${totals.programs}</span> programs, <span class="mono">${totals.students}</span> students, <span class="mono">${totals.courses}</span> courses, <span class="mono">${totals.skills}</span> skills.`;
       }
     } catch (err) {
       statusEl.className = "text-danger";
-      statusEl.textContent = "Could not connect to Oracle database. Please verify Netlify Functions are deployed and environment variables are set.";
+      statusEl.textContent = "Could not connect to Supabase database. Please verify Netlify Functions are deployed and environment variables are set.";
     }
   }
 

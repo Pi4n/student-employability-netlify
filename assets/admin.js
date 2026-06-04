@@ -425,7 +425,7 @@
       renderSkillTable(state);
     } catch (err) {
       console.error("Failed to render admin panel:", err);
-      App.notify("Failed to load data from Oracle database", "danger");
+      App.notify("Failed to load data from Supabase database", "danger");
     }
   }
 

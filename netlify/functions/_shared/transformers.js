@@ -1,14 +1,19 @@
 /**
- * Data Transformation Layer (Option B)
- * Converts between frontend format and Oracle database format
+ * Data Transformation Layer
+ * Converts between frontend display format and the Supabase/PostgreSQL
+ * column values used by the database.
+ *
+ * Convention:
+ *   *ToDb(...)   – frontend value -> Supabase column value
+ *   *FromDb(...) – Supabase column value -> frontend value
  */
 
 /**
- * Transform course type from frontend to Oracle
+ * Course type
  * Frontend: 'Core', 'Elective'
- * Oracle: 'Academic', 'Technical', 'Elective'
+ * DB:       'Academic', 'Technical', 'Elective'
  */
-function transformCourseTypeToOracle(frontendType) {
+function transformCourseTypeToDb(frontendType) {
   const mapping = {
     'Core': 'Academic',
     'Elective': 'Elective',
@@ -18,21 +23,21 @@ function transformCourseTypeToOracle(frontendType) {
   return mapping[frontendType] || 'Academic';
 }
 
-function transformCourseTypeFromOracle(oracleType) {
+function transformCourseTypeFromDb(dbType) {
   const mapping = {
     'Academic': 'Core',
     'Technical': 'Core',
     'Elective': 'Elective'
   };
-  return mapping[oracleType] || 'Core';
+  return mapping[dbType] || 'Core';
 }
 
 /**
- * Transform enrollment status
+ * Enrollment status
  * Frontend: 'In Progress', 'Completed'
- * Oracle: 'Active', 'Completed', 'Withdrawn'
+ * DB:       'Active', 'Completed', 'Withdrawn'
  */
-function transformStatusToOracle(frontendStatus) {
+function transformStatusToDb(frontendStatus) {
   const mapping = {
     'In Progress': 'Active',
     'Completed': 'Completed',
@@ -42,21 +47,21 @@ function transformStatusToOracle(frontendStatus) {
   return mapping[frontendStatus] || 'Active';
 }
 
-function transformStatusFromOracle(oracleStatus) {
+function transformStatusFromDb(dbStatus) {
   const mapping = {
     'Active': 'In Progress',
     'Completed': 'Completed',
     'Withdrawn': 'Withdrawn'
   };
-  return mapping[oracleStatus] || 'In Progress';
+  return mapping[dbStatus] || 'In Progress';
 }
 
 /**
- * Transform knowledge type
+ * Knowledge type
  * Frontend: 'Hard', 'Soft', 'Professional'
- * Oracle: 'Academic Knowledge', 'Technical Skills', 'Marketability Values'
+ * DB:       'Academic Knowledge', 'Technical Skills', 'Marketability Values'
  */
-function transformKnowledgeTypeToOracle(frontendType) {
+function transformKnowledgeTypeToDb(frontendType) {
   const mapping = {
     'Hard': 'Academic Knowledge',
     'Soft': 'Technical Skills',
@@ -68,21 +73,21 @@ function transformKnowledgeTypeToOracle(frontendType) {
   return mapping[frontendType] || 'Academic Knowledge';
 }
 
-function transformKnowledgeTypeFromOracle(oracleType) {
+function transformKnowledgeTypeFromDb(dbType) {
   const mapping = {
     'Academic Knowledge': 'Hard',
     'Technical Skills': 'Soft',
     'Marketability Values': 'Professional'
   };
-  return mapping[oracleType] || 'Hard';
+  return mapping[dbType] || 'Hard';
 }
 
 /**
- * Transform skill type
+ * Skill type
  * Frontend: 'Cognitive', 'Soft Skill', 'Professional'
- * Oracle: 'Academic Knowledge', 'Technical Skills', 'Marketability Values'
+ * DB:       'Academic Knowledge', 'Technical Skills', 'Marketability Values'
  */
-function transformSkillTypeToOracle(frontendType) {
+function transformSkillTypeToDb(frontendType) {
   const mapping = {
     'Cognitive': 'Academic Knowledge',
     'Soft Skill': 'Technical Skills',
@@ -94,24 +99,23 @@ function transformSkillTypeToOracle(frontendType) {
   return mapping[frontendType] || 'Academic Knowledge';
 }
 
-function transformSkillTypeFromOracle(oracleType) {
+function transformSkillTypeFromDb(dbType) {
   const mapping = {
     'Academic Knowledge': 'Cognitive',
     'Technical Skills': 'Soft Skill',
     'Marketability Values': 'Professional'
   };
-  return mapping[oracleType] || 'Cognitive';
+  return mapping[dbType] || 'Cognitive';
 }
 
 /**
- * Transform mapping strength
+ * Mapping strength
  * Frontend: 0.0-1.0 (number)
- * Oracle: 'Low', 'Medium', 'High' (string)
+ * DB:       'Low', 'Medium', 'High' (string)
  */
-function transformMappingStrengthToOracle(frontendStrength) {
+function transformMappingStrengthToDb(frontendStrength) {
   const num = parseFloat(frontendStrength);
   if (isNaN(num)) {
-    // Already a string
     return ['Low', 'Medium', 'High'].includes(frontendStrength) ? frontendStrength : 'Medium';
   }
   if (num < 0.4) return 'Low';
@@ -119,38 +123,38 @@ function transformMappingStrengthToOracle(frontendStrength) {
   return 'High';
 }
 
-function transformMappingStrengthFromOracle(oracleStrength) {
+function transformMappingStrengthFromDb(dbStrength) {
   const mapping = {
     'Low': 0.3,
     'Medium': 0.6,
     'High': 0.9
   };
-  return mapping[oracleStrength] || 0.6;
+  return mapping[dbStrength] || 0.6;
 }
 
 /**
- * Transform achievement value
+ * Achievement value
  * Frontend: 0.0-1.0 (number)
- * Oracle: VARCHAR2(200) (string)
+ * DB:       text/varchar (string)
  */
-function transformAchievementToOracle(frontendAchievement) {
+function transformAchievementToDb(frontendAchievement) {
   if (typeof frontendAchievement === 'number') {
     return frontendAchievement.toString();
   }
   return frontendAchievement || '0';
 }
 
-function transformAchievementFromOracle(oracleAchievement) {
-  const num = parseFloat(oracleAchievement);
+function transformAchievementFromDb(dbAchievement) {
+  const num = parseFloat(dbAchievement);
   return isNaN(num) ? 0 : num;
 }
 
 /**
- * Transform LO domain
+ * Learning-outcome domain
  * Frontend: 'Academic', 'Co-curricular'
- * Oracle: 'Knowledge', 'Skills', 'Values'
+ * DB:       'Knowledge', 'Skills', 'Values'
  */
-function transformLODomainToOracle(frontendDomain) {
+function transformLODomainToDb(frontendDomain) {
   const mapping = {
     'Academic': 'Knowledge',
     'Co-curricular': 'Skills',
@@ -161,21 +165,21 @@ function transformLODomainToOracle(frontendDomain) {
   return mapping[frontendDomain] || 'Knowledge';
 }
 
-function transformLODomainFromOracle(oracleDomain) {
+function transformLODomainFromDb(dbDomain) {
   const mapping = {
     'Knowledge': 'Academic',
     'Skills': 'Co-curricular',
     'Values': 'Co-curricular'
   };
-  return mapping[oracleDomain] || 'Academic';
+  return mapping[dbDomain] || 'Academic';
 }
 
 /**
- * Transform credit bearing boolean
+ * Credit-bearing flag
  * Frontend: true/false (boolean)
- * Oracle: 1/0 (number)
+ * DB:       1/0 (smallint)
  */
-function transformCreditBearingToOracle(frontendValue) {
+function transformCreditBearingToDb(frontendValue) {
   if (typeof frontendValue === 'boolean') {
     return frontendValue ? 1 : 0;
   }
@@ -184,25 +188,25 @@ function transformCreditBearingToOracle(frontendValue) {
   return frontendValue ? 1 : 0;
 }
 
-function transformCreditBearingFromOracle(oracleValue) {
-  return oracleValue === 1 || oracleValue === '1';
+function transformCreditBearingFromDb(dbValue) {
+  return dbValue === 1 || dbValue === '1' || dbValue === true;
 }
 
 module.exports = {
-  transformCourseTypeToOracle,
-  transformCourseTypeFromOracle,
-  transformStatusToOracle,
-  transformStatusFromOracle,
-  transformKnowledgeTypeToOracle,
-  transformKnowledgeTypeFromOracle,
-  transformSkillTypeToOracle,
-  transformSkillTypeFromOracle,
-  transformMappingStrengthToOracle,
-  transformMappingStrengthFromOracle,
-  transformAchievementToOracle,
-  transformAchievementFromOracle,
-  transformLODomainToOracle,
-  transformLODomainFromOracle,
-  transformCreditBearingToOracle,
-  transformCreditBearingFromOracle
+  transformCourseTypeToDb,
+  transformCourseTypeFromDb,
+  transformStatusToDb,
+  transformStatusFromDb,
+  transformKnowledgeTypeToDb,
+  transformKnowledgeTypeFromDb,
+  transformSkillTypeToDb,
+  transformSkillTypeFromDb,
+  transformMappingStrengthToDb,
+  transformMappingStrengthFromDb,
+  transformAchievementToDb,
+  transformAchievementFromDb,
+  transformLODomainToDb,
+  transformLODomainFromDb,
+  transformCreditBearingToDb,
+  transformCreditBearingFromDb
 };

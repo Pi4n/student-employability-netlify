@@ -3,7 +3,7 @@
  * Activity Logging Logic
  * - Staff Module: Courses, Activities, Activity→Skill mappings
  * - Student Module: Enrollments, Participation
- * All data live from Oracle via Netlify Functions with Option B transformations.
+ * All data live from Supabase via Netlify Functions with server-side transformations.
  */
 
 (function () {
