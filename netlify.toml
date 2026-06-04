@@ -24,6 +24,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+[functions]
+  external_node_modules = ["oracledb"]
+
 # Required environment variables (set in Netlify UI -> Site settings -> Env):
 #   SUPABASE_URL              = https://<project-ref>.supabase.co
 #   SUPABASE_SERVICE_ROLE_KEY = <service role key, server-only>
